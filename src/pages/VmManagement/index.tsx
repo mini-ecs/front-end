@@ -1,5 +1,51 @@
+import { PageContainer } from '@ant-design/pro-layout';
+import ProCard from '@ant-design/pro-card';
+
+const PageContent = () => <ProCard>tffff</ProCard>;
+
+const MyVM = () => (
+  <>
+    <ProCard direction="column" ghost gutter={[0, 16]}>
+      <ProCard title="我的实例" style={{ height: 200 }}>
+        Test Components 1{' '}
+      </ProCard>
+      <ProCard gutter={16} ghost style={{ height: 200 }}>
+        <ProCard title="left" colSpan={12}>
+          Test Components 2
+        </ProCard>
+        <ProCard title="right" colSpan={12}>
+          Test Components 4
+        </ProCard>
+      </ProCard>
+    </ProCard>
+  </>
+);
+
 const VmManagement: React.FC = () => {
-  return <div>This page is developing now.</div>;
+  return (
+    <PageContainer
+      content={<PageContent />}
+      fixedHeader
+      ghost
+      tabList={[
+        {
+          tab: '已选择',
+          key: '1',
+          children: <MyVM />,
+        },
+        {
+          tab: '可点击',
+          key: '2',
+          children: <ProCard>No implement</ProCard>,
+        },
+      ]}
+      tabProps={{
+        type: 'line',
+        hideAdd: true,
+        animated: true,
+      }}
+    />
+  );
 };
 
 export default VmManagement;

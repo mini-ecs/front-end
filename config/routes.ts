@@ -10,6 +10,7 @@ export default [
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   { path: '/vms', name: '实例管理', icon: 'cloud', component: './VmManagement' },
   { path: '/images', name: '镜像管理', icon: 'solution', component: './ImageManagement' },
+  { path: '/createVM', icon: 'solution', component: './CreateVM' },
   {
     path: '/admin',
     name: '管理页',
