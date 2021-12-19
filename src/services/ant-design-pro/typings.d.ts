@@ -98,4 +98,14 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+  type CourseList = {
+    data: Course[];
+    total?: number;
+    success?: boolean;
+  };
+
+  type Course = {
+    label: string;
+    value: string;
+  };
 }

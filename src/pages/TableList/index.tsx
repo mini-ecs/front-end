@@ -84,6 +84,7 @@ const TableList: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
+   * 这个函数控制弹窗的产生和消失
    *  */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /**
@@ -96,10 +97,6 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
@@ -253,7 +250,7 @@ const TableList: React.FC = () => {
         </FooterToolbar>
       )}
       <ModalForm
-        title={'新建规则'}
+        title={'新建规则nnnn'}
         width="400px"
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
@@ -281,6 +278,7 @@ const TableList: React.FC = () => {
         />
         <ProFormTextArea width="md" name="desc" />
       </ModalForm>
+
       <UpdateForm
         onSubmit={async (value) => {
           const success = await handleUpdate(value);

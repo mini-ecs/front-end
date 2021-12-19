@@ -101,7 +101,25 @@ const getNotices = (req: Request, res: Response) => {
     ],
   });
 };
-
+const getCources = (req: Request, res: Response) => {
+  res.json({
+    data: [
+      {
+        label: '000000001',
+        value: 'notification',
+      },
+      {
+        label: '234',
+        value: '123',
+      },
+      {
+        label: '1245',
+        value: '1234',
+      },
+    ],
+  });
+};
 export default {
   'GET /api/notices': getNotices,
+  'GET /api/courses': getCources,
 };
