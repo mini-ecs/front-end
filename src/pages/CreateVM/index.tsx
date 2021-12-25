@@ -28,9 +28,6 @@ const CreateVM = () => {
     });
   });
 
-  // const ref1 = useRef<ProFormInstance>();
-  // const ref2 = useRef<ProFormInstance>();
-  // const ref3 = useRef<ProFormInstance>();
   const formMapRef = useRef<React.MutableRefObject<ProFormInstance<any> | undefined>[]>([]);
 
   return (
@@ -40,17 +37,18 @@ const CreateVM = () => {
       }>
         formMapRef={formMapRef}
         onFinish={async () => {
-          console.log('all getFieldsFormatValue', formMapRef.current[0]?.current);
-          // console.log('all the step is done', formMapRef.current?.getFieldsValue(['base', 'step']));
-          // console.log('validate', await formMapRef.current?.validateFields());
-          // const ret = formMapRef.current?.validateFieldsReturnFormatValue;
-          // if (ret !== undefined) {
-          //   const lastdata = await ret();
-          //   console.log('lastdata', lastdata);
-          // } else {
-          //   console.log('empty data');
-          // }
-          // message.success('提交成功');
+          console.log(
+            'all getFieldsFormatValue',
+            await formMapRef.current[0]?.current?.validateFields(),
+          );
+          console.log(
+            'all getFieldsFormatValue',
+            await formMapRef.current[1]?.current?.validateFields(),
+          );
+          console.log(
+            'all getFieldsFormatValue',
+            await formMapRef.current[2]?.current?.validateFields(),
+          );
         }}
         formProps={{
           validateMessages: {
@@ -67,8 +65,8 @@ const CreateVM = () => {
             description: '这里填入的都是基本信息',
           }}
           onFinish={async () => {
+            console.log('step1');
             console.log(await formMapRef.current[0].current?.validateFields());
-            console.log('step1', formMapRef.current[0].current?.getFieldValue('base'));
             return true;
           }}
         >
@@ -96,51 +94,15 @@ const CreateVM = () => {
           />
         </StepsForm.StepForm>
 
-        <StepsForm.StepForm<{
-          checkbox: string;
-        }>
-          name="step"
-          title="设置参数"
-          stepProps={{
-            description: '这里填入运维参数',
-          }}
-          onFinish={async () => {
-            console.log(
-              'step2 getFieldsFormatValue',
-              formMapRef.current[1].current?.getFieldsFormatValue?.(),
-            );
-            console.log('step2', formMapRef.current[1]?.current?.getFieldValue('base'));
-            console.log(await formMapRef.current[1].current?.validateFields());
-
-            return true;
-          }}
-        >
-          <ProFormCheckbox.Group
-            name={['step', 'choices']}
-            label="迁移类型"
-            width="lg"
-            options={['结构迁移', '全量迁移', '增量迁移', '全量校验']}
-          />
-          <ProForm.Group>
-            <ProFormText name={['step', 'dbname']} label="业务 DB 用户名" />
-            <ProFormDatePicker name={['step', 'dbdatetime']} label="记录保存时间" width="sm" />
-            <ProFormCheckbox.Group
-              name={['step', 'chocheckboxices']}
-              label="迁移类型"
-              options={['完整 LOB', '不同步 LOB', '受限制 LOB']}
-            />
-          </ProForm.Group>
-        </StepsForm.StepForm>
-
-        <StepsForm.StepForm
+        {/* <StepsForm.StepForm
           name="lab"
-          title="发布实验"
+          title="生成实例"
           stepProps={{
             description: '这里填入发布判断',
           }}
           onFinish={async () => {
-            console.log('step3', formMapRef.current[2].current?.getFieldValue('base'));
-            console.log('step3', await formMapRef.current[2].current?.validateFields());
+            console.log('step3');
+            console.log(await formMapRef.current[1].current?.validateFields());
             return true;
           }}
         >
@@ -183,7 +145,7 @@ const CreateVM = () => {
               { value: '2', label: '策略二' },
             ]}
           />
-        </StepsForm.StepForm>
+        </StepsForm.StepForm> */}
       </StepsForm>
     </ProCard>
   );

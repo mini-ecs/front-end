@@ -54,6 +54,7 @@ const columns: ProColumns<TableListItem>[] = [
   {
     title: 'IP地址',
     dataIndex: 'name',
+    copyable: true,
     // render: (_) => <a>{_}</a>,
     // 自定义筛选项功能具体实现请参考 https://ant.design/components/table-cn/#components-table-demo-custom-filter-panel
   },
@@ -125,16 +126,16 @@ const columns: ProColumns<TableListItem>[] = [
     key: 'option',
     valueType: 'option',
     render: () => [
-      <a key="link">链路</a>,
-      <a key="link2">报警</a>,
-      <a key="link3">监控</a>,
-      <TableDropdown
-        key="actionGroup"
-        menus={[
-          { key: 'copy', name: '复制' },
-          { key: 'delete', name: '删除' },
-        ]}
-      />,
+      <a key="link">详情</a>,
+      <a key="link2">复制</a>,
+      <a key="link3">删除</a>,
+      // <TableDropdown
+      //   key="actionGroup"
+      //   menus={[
+      //     { key: 'copy', name: '复制' },
+      //     { key: 'delete', name: '删除' },
+      //   ]}
+      // />,
     ],
   },
 ];
@@ -169,24 +170,24 @@ const ImageManagement = () => {
       }}
       dateFormatter="string"
       toolbar={{
-        title: '高级表格',
-        tooltip: '这是一个标题提示',
+        title: '实例信息',
+        // tooltip: '这是一个标题提示',
       }}
       toolBarRender={() => [
-        <Button key="danger" danger>
-          危险按钮
-        </Button>,
-        <Button key="show">查看日志</Button>,
+        // <Button key="danger" danger>
+        //   危险按钮
+        // </Button>,
+        // <Button key="show">查看日志</Button>,
         <Link to="/createVM">
           <Button type="primary" key="primary">
-            创建应用
+            创建实例
           </Button>
         </Link>,
-        <Dropdown key="menu" overlay={menu}>
-          <Button>
-            <EllipsisOutlined />
-          </Button>
-        </Dropdown>,
+        // <Dropdown key="menu" overlay={menu}>
+        //   <Button>
+        //     <EllipsisOutlined />
+        //   </Button>
+        // </Dropdown>,
       ]}
     />
   );
