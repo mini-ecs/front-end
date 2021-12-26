@@ -181,7 +181,7 @@ const handleAdd = async (): Promise<TableListItem> => {
   };
 };
 
-const VmManagement: React.FC = () => {
+const CourceManagement: React.FC = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const { run } = useRequest(() => {
@@ -271,4 +271,4 @@ const VmManagement: React.FC = () => {
   );
 };
 
-export default VmManagement;
+export default CourceManagement;
