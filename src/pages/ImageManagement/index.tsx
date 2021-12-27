@@ -178,7 +178,7 @@ const ImageManagement = () => {
         //   危险按钮
         // </Button>,
         // <Button key="show">查看日志</Button>,
-        <Link to="/createVM">
+        <Link to="/createCourse">
           <Button type="primary" key="primary">
             创建实例
           </Button>

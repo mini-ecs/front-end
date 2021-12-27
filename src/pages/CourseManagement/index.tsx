@@ -2,7 +2,7 @@ import { Button, Tooltip, Menu } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { request, useRequest } from 'umi';
+import { request, useRequest, Link } from 'umi';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { useState, useRef } from 'react';
@@ -55,15 +55,8 @@ const columns: ProColumns<TableListItem>[] = [
     width: 48,
   },
   {
-    title: 'IP地址',
-    dataIndex: 'name',
-    copyable: true,
-    // render: (_) => <a>{_}</a>,
-    // 自定义筛选项功能具体实现请参考 https://ant.design/components/table-cn/#components-table-demo-custom-filter-panel
-  },
-  {
-    title: '创建者',
-    dataIndex: 'creator',
+    title: '课程名',
+    dataIndex: 'course',
     valueEnum: {
       all: { text: '全部' },
       付小小: { text: '付小小' },
@@ -74,6 +67,20 @@ const columns: ProColumns<TableListItem>[] = [
     },
   },
 
+  {
+    title: '课程老师',
+    dataIndex: 'cource',
+    initialValue: 'all',
+    filters: true,
+    onFilter: true,
+    valueEnum: {
+      all: { text: 'A', status: 'Default' },
+      close: { text: 'B', status: 'Default' },
+      running: { text: 'C', status: 'Processing' },
+      online: { text: 'D', status: 'Success' },
+      error: { text: 'E', status: 'Error' },
+    },
+  },
   {
     title: '配置信息',
     dataIndex: 'config',
@@ -90,8 +97,8 @@ const columns: ProColumns<TableListItem>[] = [
     },
   },
   {
-    title: '从属课程',
-    dataIndex: 'cource',
+    title: '课程使用镜像',
+    dataIndex: 'image',
     initialValue: 'all',
     filters: true,
     onFilter: true,
@@ -104,17 +111,17 @@ const columns: ProColumns<TableListItem>[] = [
     },
   },
   {
-    title: '状态',
-    dataIndex: 'status',
+    title: '挂载磁盘',
+    dataIndex: 'disk',
     initialValue: 'all',
     filters: true,
     onFilter: true,
     valueEnum: {
-      all: { text: '全部', status: 'Default' },
-      close: { text: '关闭', status: 'Default' },
-      running: { text: '运行中', status: 'Processing' },
-      online: { text: '已上线', status: 'Success' },
-      error: { text: '异常', status: 'Error' },
+      all: { text: 'A', status: 'Default' },
+      close: { text: 'B', status: 'Default' },
+      running: { text: 'C', status: 'Processing' },
+      online: { text: 'D', status: 'Success' },
+      error: { text: 'E', status: 'Error' },
     },
   },
   {
@@ -133,19 +140,12 @@ const columns: ProColumns<TableListItem>[] = [
     sorter: (a, b) => a.createdAt - b.createdAt,
   },
   {
-    title: '备注',
-    dataIndex: 'memo',
-    ellipsis: true,
-    copyable: true,
-  },
-  {
     title: '操作',
     width: 180,
     key: 'option',
     valueType: 'option',
     render: () => [
       <a key="link">详情</a>,
-      <a key="link2">复制</a>,
       <a key="link3">删除</a>,
       <TableDropdown
         key="actionGroup"
@@ -181,7 +181,7 @@ const handleAdd = async (): Promise<TableListItem> => {
   };
 };
 
-const CourceManagement: React.FC = () => {
+const CourseManagement: React.FC = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const { run } = useRequest(() => {
@@ -193,7 +193,7 @@ const CourceManagement: React.FC = () => {
   return (
     <PageContainer>
       <ModalForm
-        title={'新建实例'}
+        title={'新建课程'}
         width="500px"
         visible={createModalVisible}
         formRef={formRef}
@@ -250,25 +250,20 @@ const CourceManagement: React.FC = () => {
         }}
         dateFormatter="string"
         toolbar={{
-          title: '实例信息',
+          title: '课程',
           // tooltip: '这是一个标题提示',
         }}
         toolBarRender={() => [
           // <Link to="/createVM">   可以链接到对应的路由
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalVisible(true);
-              console.log('浮层表格被打开', createModalVisible);
-            }}
-          >
-            创建实例
-          </Button>,
+          <Link to="/createCourse">
+            <Button type="primary" key="primary" onClick={() => {}}>
+              新建课程
+            </Button>
+          </Link>,
         ]}
       />
     </PageContainer>
   );
 };
 
-export default CourceManagement;
+export default CourseManagement;

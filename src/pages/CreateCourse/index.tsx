@@ -21,7 +21,7 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-const CreateVM = () => {
+const CreateCourse = () => {
   const { run } = useRequest(() => {
     return request<API.CourseList>('/api/courses', {
       method: 'GET',
@@ -151,4 +151,4 @@ const CreateVM = () => {
   );
 };
 
-export default CreateVM;
+export default CreateCourse;
