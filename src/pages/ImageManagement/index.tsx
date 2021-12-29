@@ -52,13 +52,6 @@ const columns: ProColumns<TableListItem>[] = [
     width: 48,
   },
   {
-    title: 'IP地址',
-    dataIndex: 'name',
-    copyable: true,
-    // render: (_) => <a>{_}</a>,
-    // 自定义筛选项功能具体实现请参考 https://ant.design/components/table-cn/#components-table-demo-custom-filter-panel
-  },
-  {
     title: '创建者',
     dataIndex: 'creator',
     valueEnum: {
@@ -71,7 +64,7 @@ const columns: ProColumns<TableListItem>[] = [
     },
   },
   {
-    title: '状态',
+    title: '创建方式',
     dataIndex: 'status',
     initialValue: 'all',
     filters: true,
@@ -85,20 +78,13 @@ const columns: ProColumns<TableListItem>[] = [
     },
   },
   {
-    title: '配置信息',
-    dataIndex: 'config',
+    title: '镜像位置',
+    dataIndex: 'status',
     initialValue: 'all',
     filters: true,
     onFilter: true,
-    valueEnum: {
-      V2G8: { text: '2 vCPU 8 GiB' },
-      V2G4: { text: '2 vCPU 4 GiB' },
-      V2G2: { text: '2 vCPU 2 GiB' },
-      V4G8: { text: '4 vCPU 8 GiB' },
-      V4G16: { text: '4 vCPU 16 GiB' },
-      V8G16: { text: '8 vCPU 16 GiB' },
-    },
   },
+
   {
     title: (
       <>
@@ -115,38 +101,28 @@ const columns: ProColumns<TableListItem>[] = [
     sorter: (a, b) => a.createdAt - b.createdAt,
   },
   {
-    title: '备注',
-    dataIndex: 'memo',
-    ellipsis: true,
-    copyable: true,
+    title: (
+      <>
+        最近修改时间
+        <Tooltip placement="top" title="这是一段描述">
+          <QuestionCircleOutlined style={{ marginLeft: 4 }} />
+        </Tooltip>
+      </>
+    ),
+    width: 140,
+    key: 'since',
+    dataIndex: 'createdAt',
+    valueType: 'date',
+    sorter: (a, b) => a.createdAt - b.createdAt,
   },
   {
     title: '操作',
     width: 180,
     key: 'option',
     valueType: 'option',
-    render: () => [
-      <a key="link">详情</a>,
-      <a key="link2">复制</a>,
-      <a key="link3">删除</a>,
-      // <TableDropdown
-      //   key="actionGroup"
-      //   menus={[
-      //     { key: 'copy', name: '复制' },
-      //     { key: 'delete', name: '删除' },
-      //   ]}
-      // />,
-    ],
+    render: () => [<a key="link">详情</a>, <a key="link2">复制</a>, <a key="link3">删除</a>],
   },
 ];
-
-const menu = (
-  <Menu>
-    <Menu.Item key="1">1st item</Menu.Item>
-    <Menu.Item key="2">2nd item</Menu.Item>
-    <Menu.Item key="3">3rd item</Menu.Item>
-  </Menu>
-);
 
 const ImageManagement = () => {
   return (
@@ -170,24 +146,13 @@ const ImageManagement = () => {
       }}
       dateFormatter="string"
       toolbar={{
-        title: '实例信息',
+        title: '镜像/快照信息',
         // tooltip: '这是一个标题提示',
       }}
       toolBarRender={() => [
-        // <Button key="danger" danger>
-        //   危险按钮
-        // </Button>,
-        // <Button key="show">查看日志</Button>,
-        <Link to="/createCourse">
-          <Button type="primary" key="primary">
-            创建实例
-          </Button>
-        </Link>,
-        // <Dropdown key="menu" overlay={menu}>
-        //   <Button>
-        //     <EllipsisOutlined />
-        //   </Button>
-        // </Dropdown>,
+        <Button type="primary" key="primary">
+          导入镜像
+        </Button>,
       ]}
     />
   );

@@ -60,7 +60,7 @@ const CreateCourse = () => {
           name: string;
         }>
           name="base"
-          title="创建虚拟机"
+          title="课程基本信息"
           stepProps={{
             description: '这里填入的都是基本信息',
           }}
@@ -73,7 +73,7 @@ const CreateCourse = () => {
           {/* begin step form */}
           <ProFormText
             name={['base', 'name']}
-            label="实例名称"
+            label="课程名"
             width="md"
             tooltip="最长为 24 位，用于标定的唯一 id"
             placeholder="请输入名称"
@@ -81,10 +81,17 @@ const CreateCourse = () => {
           />
           <ProFormSelect
             name={['base', 'course']}
-            label="选择课程"
+            label="选择快照"
             request={run}
-            placeholder="请选择一个课程"
-            rules={[{ required: true, message: '请选择你的课程' }]}
+            placeholder="请选择一个快照或镜像"
+            rules={[{ required: true, message: '请选择一个快照或镜像' }]}
+          />
+          <ProFormSelect
+            name={['base', 'ram']}
+            label="选择内存大小和CPU核数"
+            request={run}
+            placeholder="请选择一个规格"
+            rules={[{ required: true, message: '请选择一个规格' }]}
           />
           <ProFormTextArea
             name={['base', 'note']}

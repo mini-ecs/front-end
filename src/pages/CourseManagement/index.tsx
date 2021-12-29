@@ -189,45 +189,8 @@ const CourseManagement: React.FC = () => {
       method: 'GET',
     });
   });
-  const formRef = useRef<ProFormInstance>();
   return (
     <PageContainer>
-      <ModalForm
-        title={'新建课程'}
-        width="500px"
-        visible={createModalVisible}
-        formRef={formRef}
-        onVisibleChange={handleModalVisible}
-        onFinish={async () => {
-          const newItem = await handleAdd();
-          console.log('form表格的结果为', await formRef.current?.validateFields());
-          if (newItem) {
-            handleModalVisible(false);
-
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          name={['base', 'name']}
-          label="实例名称"
-          width="md"
-          tooltip="最长为 24 位，用于标定的唯一 id"
-          placeholder="请输入名称"
-          rules={[{ required: true }]}
-        />
-        <ProFormSelect
-          name={['base', 'course']}
-          label="选择课程"
-          width="md"
-          request={run}
-          placeholder="请选择一个课程"
-          rules={[{ required: true, message: '请选择你的课程' }]}
-        />
-        <ProFormTextArea name={['base', 'note']} label="备注" width="xl" placeholder="请输入备注" />
-      </ModalForm>
       <ProTable<TableListItem>
         columns={columns}
         actionRef={actionRef}
