@@ -1,19 +1,78 @@
-import {
-  AlipayCircleOutlined,
-  LockOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
-import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
-import { ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm } from '@ant-design/pro-form';
-import { history, useModel } from 'umi';
+import { ConfigProvider } from 'antd';
+import React, { useContext, useMemo } from 'react';
+import { ProFormText, ProFormCaptcha, ProFormCheckbox } from '@ant-design/pro-form';
+import { UserOutlined, MobileOutlined, LockOutlined } from '@ant-design/icons';
+import { message as mess, Tabs, Alert } from 'antd';
+import { useState } from 'react';
+import './index.less';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import ProForm from '@ant-design/pro-form';
+import type { ProFormProps } from '@ant-design/pro-form';
 import styles from './index.less';
+import { history, useModel } from 'umi';
+
+export type LoginFormProps<T> = {
+  message: React.ReactNode | false;
+  title: React.ReactNode | false;
+  subTitle: React.ReactNode | false;
+  actions: React.ReactNode;
+  logo?: React.ReactNode | string;
+} & ProFormProps<T>;
+
+function LoginForm<T = Record<string, any>>(
+  props: Partial<LoginFormProps<T>> & { submitText?: string },
+) {
+  const { submitText, logo, message, title, subTitle, actions, children, ...proFormProps } = props;
+
+  const submitter = {
+    searchConfig: {
+      submitText: submitText,
+    },
+    render: (_, dom) => dom.pop(),
+    submitButtonProps: {
+      size: 'large',
+      style: {
+        width: '100%',
+      },
+    },
+    ...proFormProps.submitter,
+  } as ProFormProps['submitter'];
+
+  const context = useContext(ConfigProvider.ConfigContext);
+  const baseClassName = context.getPrefixCls('pro-form-login');
+  const getCls = (className: string) => `${baseClassName}-${className}`;
+
+  /** 生成logo 的dom，如果是string 设置为图片 如果是个 dom 就原样保留 */
+  const logoDom = useMemo(() => {
+    if (!logo) return null;
+    if (typeof logo === 'string') {
+      return <img src={logo} />;
+    }
+    return logo;
+  }, [logo]);
+
+  return (
+    <div className={getCls('container')}>
+      <div className={getCls('top')}>
+        {title || logoDom ? (
+          <div className={getCls('header')}>
+            {logoDom ? <span className={getCls('logo')}>{logoDom}</span> : null}
+            {title ? <span className={getCls('title')}>{title}</span> : null}
+          </div>
+        ) : null}
+        {subTitle ? <div className={getCls('desc')}>{subTitle}</div> : null}
+      </div>
+      <div className={getCls('main')}>
+        <ProForm isKeyPressSubmit submitter={submitter} {...proFormProps}>
+          {message}
+          {children}
+        </ProForm>
+        {actions ? <div className={getCls('other')}>{actions}</div> : null}
+      </div>
+    </div>
+  );
+}
 
 const LoginMessage: React.FC<{
   content: string;
@@ -32,6 +91,7 @@ const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [loginFormText, setloginFormText] = useState<string>('登录');
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -48,7 +108,7 @@ const Login: React.FC = () => {
 
       if (msg.status === 'ok') {
         const defaultLoginSuccessMessage = '登录成功！';
-        message.success(defaultLoginSuccessMessage);
+        mess.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
@@ -66,7 +126,7 @@ const Login: React.FC = () => {
       setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+      mess.error(defaultLoginFailureMessage);
     }
   };
 
@@ -78,22 +138,24 @@ const Login: React.FC = () => {
           // logo={<img alt="logo" src="/hit.png" />}
           title="哈工大深圳计算机科学与技术学院"
           subTitle={'虚拟机管理平台'}
+          submitText={loginFormText}
           initialValues={{
             autoLogin: true,
           }}
-          // actions={[
-          //   '其他登录方式 :',
-          //   <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
-          //   <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
-          //   <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
-          // ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
         >
-          <Tabs activeKey={type} onChange={setType}>
-            <Tabs.TabPane key="account" tab={'账户密码登录'} />
-            <Tabs.TabPane key="mobile" tab={'手机号登录'} />
+          <Tabs
+            activeKey={type}
+            onChange={(typeStr: string) => {
+              console.log('tab type is ', loginType, typeStr);
+              setType(typeStr);
+              setloginFormText(loginType === 'account' ? '登录' : '注册');
+            }}
+          >
+            <Tabs.TabPane key="account" tab={'登录'} />
+            <Tabs.TabPane key="register" tab={'注册'} />
           </Tabs>
 
           {status === 'error' && loginType === 'account' && (
@@ -132,61 +194,36 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
-          {type === 'mobile' && (
+          {status === 'error' && loginType === 'register' && <LoginMessage content="验证码错误" />}
+          {type === 'register' && (
             <>
               <ProFormText
+                name="username"
                 fieldProps={{
                   size: 'large',
-                  prefix: <MobileOutlined className={styles.prefixIcon} />,
+                  prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                name="mobile"
-                placeholder={'请输入手机号！'}
+                placeholder={'用户名: admin or user'}
                 rules={[
                   {
                     required: true,
-                    message: '手机号是必填项！',
-                  },
-                  {
-                    pattern: /^1\d{10}$/,
-                    message: '不合法的手机号！',
+                    message: '用户名是必填项！',
                   },
                 ]}
               />
-              <ProFormCaptcha
+              <ProFormText.Password
+                name="password"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                captchaProps={{
-                  size: 'large',
-                }}
-                placeholder={'请输入验证码！'}
-                captchaTextRender={(timing, count) => {
-                  if (timing) {
-                    return `${count} ${'秒后重新获取'}`;
-                  }
-
-                  return '获取验证码';
-                }}
-                name="captcha"
+                placeholder={'密码: ant.design'}
                 rules={[
                   {
                     required: true,
-                    message: '验证码是必填项！',
+                    message: '密码是必填项！',
                   },
                 ]}
-                onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
-                    phone,
-                  });
-
-                  if (result === false) {
-                    return;
-                  }
-
-                  message.success('获取验证码成功！验证码为：1234');
-                }}
               />
             </>
           )}

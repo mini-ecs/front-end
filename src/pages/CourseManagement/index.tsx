@@ -144,17 +144,7 @@ const columns: ProColumns<TableListItem>[] = [
     width: 180,
     key: 'option',
     valueType: 'option',
-    render: () => [
-      <a key="link">详情</a>,
-      <a key="link3">删除</a>,
-      <TableDropdown
-        key="actionGroup"
-        menus={[
-          { key: 'copy', name: '制作快照' },
-          { key: 'delete', name: '回滚快照' },
-        ]}
-      />,
-    ],
+    render: () => [<a key="link">详情</a>, <a key="link3">删除</a>],
   },
 ];
 
@@ -182,7 +172,6 @@ const handleAdd = async (): Promise<TableListItem> => {
 };
 
 const CourseManagement: React.FC = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const { run } = useRequest(() => {
     return request<API.CourseList>('/api/courses', {
