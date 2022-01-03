@@ -7,6 +7,7 @@ import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
+import { map } from 'lodash';
 
 const valueEnum = {
   0: 'close',
@@ -16,16 +17,13 @@ const valueEnum = {
 };
 
 export type TableListItem = {
-  key: number;
-  name: string;
-  containers: number;
-  creator: string;
-  status: string;
-  createdAt: number;
+  ID: number;
+  course: string;
+  teacher: string;
   config: string;
-  progress: number;
-  money: number;
-  memo: string;
+  image: string;
+  disk: string;
+  createdAt: string;
 };
 const tableListDataSource: TableListItem[] = [];
 
@@ -34,23 +32,17 @@ const configs = ['V2G2', 'V2G4', 'V2G8', 'V4G4', 'V4G8'];
 
 for (let i = 0; i < 5; i += 1) {
   tableListDataSource.push({
-    key: i,
-    name: '192.168.0.1',
-    containers: Math.floor(Math.random() * 20),
-    creator: creators[Math.floor(Math.random() * creators.length)],
-    status: valueEnum[Math.floor(Math.random() * 10) % 4],
-    createdAt: Date.now() - Math.floor(Math.random() * 2000000000000),
+    ID: i,
+    course: '192.168.0.1',
+    teacher: creators[Math.floor(Math.random() * creators.length)],
     config: configs[Math.floor(Math.random() * configs.length)],
-    money: Math.floor(Math.random() * 2000) * i,
-    progress: Math.ceil(Math.random() * 100) + 1,
-    memo: i % 2 === 1 ? '很长很长很长很长很长很长很长的文字要展示但是要留下尾巴' : '简短备注文案',
   });
 }
 
 const columns: ProColumns<TableListItem>[] = [
   {
     title: '序号',
-    dataIndex: 'index',
+    dataIndex: 'ID',
     valueType: 'indexBorder',
     width: 48,
   },
@@ -69,7 +61,7 @@ const columns: ProColumns<TableListItem>[] = [
 
   {
     title: '课程老师',
-    dataIndex: 'cource',
+    dataIndex: 'teacher',
     initialValue: 'all',
     filters: true,
     onFilter: true,
@@ -148,49 +140,42 @@ const columns: ProColumns<TableListItem>[] = [
   },
 ];
 
-const menu = (
-  <Menu>
-    <Menu.Item key="1">1st item</Menu.Item>
-    <Menu.Item key="2">2nd item</Menu.Item>
-    <Menu.Item key="3">3rd item</Menu.Item>
-  </Menu>
-);
-const handleAdd = async (): Promise<TableListItem> => {
-  // todo 此处将信息发送
-  return {
-    key: 2,
-    name: '192.168.0.1',
-    containers: Math.floor(Math.random() * 20),
-    creator: creators[Math.floor(Math.random() * creators.length)],
-    status: valueEnum[Math.floor(Math.random() * 10) % 4],
-    createdAt: Date.now() - Math.floor(Math.random() * 2000000000000),
-    config: configs[Math.floor(Math.random() * configs.length)],
-    money: Math.floor(Math.random() * 2000) * 4,
-    progress: Math.ceil(Math.random() * 100) + 1,
-    memo: 4 % 2 === 1 ? '很长很长很长很长很长很长很长的文字要展示但是要留下尾巴' : '简短备注文案',
-  };
-};
-
 const CourseManagement: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const { run } = useRequest(() => {
-    return request<API.CourseList>('/api/courses', {
+  const { run: getCourseList } = useRequest(async () => {
+    const courses = await request<API.CourseList>('/api/v1/course', {
       method: 'GET',
     });
+    const mapdata = {
+      data:
+        courses.data?.map((course) => {
+          const one: TableListItem = {
+            ID: course.ID || 0,
+            course: course.courseName || 'error',
+            teacher: course.teacher.username || 'null',
+            config: course.conf || 'null',
+            image: course.Ima || 'null',
+            disk: 'tmp',
+            createdAt: course.CreatedAt || ' ',
+          };
+          return one;
+        }) || [],
+    };
+    console.log(courses);
+    console.log(mapdata);
+
+    return mapdata;
   });
   return (
     <PageContainer>
       <ProTable<TableListItem>
         columns={columns}
         actionRef={actionRef}
-        request={(params, sorter, filter) => {
+        request={async (params, sorter, filter) => {
           // 表单搜索项会从 params 传入，传递给后端接口。
           // todo 将请求发送给后端，返回已经有的列表
           console.log('params: ', params, 'sorter: ', sorter, 'filter: ', filter);
-          return Promise.resolve({
-            data: tableListDataSource,
-            success: true,
-          });
+          return await getCourseList();
         }}
         rowKey="key"
         pagination={{

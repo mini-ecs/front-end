@@ -88,13 +88,50 @@ declare namespace API {
     type?: NoticeIconItemType;
   };
   type CourseList = {
-    data: Course[];
-    total?: number;
-    success?: boolean;
+    code?: number;
+    msg?: string;
+    data?: Course[];
   };
 
   type Course = {
-    label: string;
-    value: string;
+    courseName?: string;
+    teacher?: any;
+    ID?: number;
+    conf?: string;
+    Ima?: string;
+    sta?: string;
+    CreatedAt?: string;
+  };
+
+  type ImageList = {
+    code?: number;
+    msg?: string;
+    data?: Image[];
+  };
+
+  type Image = {
+    name?: string;
+    type?: string;
+    location?: string;
+    generateType?: string;
+    creator?: string;
+  };
+
+  type MachineConfigList = {
+    code?: number;
+    msg?: string;
+    data?: MachineConfig[];
+  };
+  type MachineConfig = {
+    ID?: number;
+    cpu?: number;
+    ram?: number;
+  };
+
+  type NewCourseOpts = {
+    courseName?: string;
+    imageName?: string;
+    note?: string;
+    configs?: number;
   };
 }

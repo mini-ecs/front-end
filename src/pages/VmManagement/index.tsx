@@ -158,13 +158,6 @@ const columns: ProColumns<TableListItem>[] = [
   },
 ];
 
-const menu = (
-  <Menu>
-    <Menu.Item key="1">1st item</Menu.Item>
-    <Menu.Item key="2">2nd item</Menu.Item>
-    <Menu.Item key="3">3rd item</Menu.Item>
-  </Menu>
-);
 const handleAdd = async (): Promise<TableListItem> => {
   // todo 此处将信息发送
   return {
@@ -184,10 +177,20 @@ const handleAdd = async (): Promise<TableListItem> => {
 const VmManagement: React.FC = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const { run } = useRequest(() => {
-    return request<API.CourseList>('/api/courses', {
+  const { run: getCourseList } = useRequest(async () => {
+    const courses = await request<API.CourseList>('/api/v1/course', {
       method: 'GET',
     });
+
+    return {
+      data:
+        courses.data?.map((course) => {
+          return {
+            label: course.courseName,
+            value: course.courseName,
+          };
+        }) || [],
+    };
   });
   const formRef = useRef<ProFormInstance>();
   return (
@@ -222,7 +225,7 @@ const VmManagement: React.FC = () => {
           name={['base', 'course']}
           label="选择课程"
           width="md"
-          request={run}
+          request={getCourseList}
           placeholder="请选择一个课程"
           rules={[{ required: true, message: '请选择你的课程' }]}
         />
