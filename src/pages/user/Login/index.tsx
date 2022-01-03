@@ -1,16 +1,17 @@
 import { ConfigProvider } from 'antd';
 import React, { useContext, useMemo } from 'react';
-import { ProFormText, ProFormCaptcha, ProFormCheckbox } from '@ant-design/pro-form';
-import { UserOutlined, MobileOutlined, LockOutlined } from '@ant-design/icons';
-import { message as mess, Tabs, Alert } from 'antd';
+import { ProFormText } from '@ant-design/pro-form';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { message as mess, Tabs } from 'antd';
 import { useState } from 'react';
 import './index.less';
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
+import { login, register } from '@/services/ant-design-pro/api';
 import ProForm from '@ant-design/pro-form';
 import type { ProFormProps } from '@ant-design/pro-form';
 import styles from './index.less';
 import { history, useModel } from 'umi';
+import user from 'mock/user';
 
 export type LoginFormProps<T> = {
   message: React.ReactNode | false;
@@ -74,21 +75,7 @@ function LoginForm<T = Record<string, any>>(
   );
 }
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => (
-  <Alert
-    style={{
-      marginBottom: 24,
-    }}
-    message={content}
-    type="error"
-    showIcon
-  />
-);
-
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const [loginFormText, setloginFormText] = useState<string>('登录');
@@ -97,40 +84,53 @@ const Login: React.FC = () => {
     const userInfo = await initialState?.fetchUserInfo?.();
 
     if (userInfo) {
+      console.debug('userInfo: ', userInfo);
       await setInitialState((s) => ({ ...s, currentUser: userInfo }));
     }
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
-    try {
-      // 登录
-      const msg = await login({ ...values, type });
+    console.log(values);
+    if (type === 'account') {
+      try {
+        // 登录
+        const msg = await login({ ...values, type });
+        if (msg.code === 200) {
+          const defaultLoginSuccessMessage = '登录成功！';
+          mess.success(defaultLoginSuccessMessage);
+          await fetchUserInfo();
+          /** 此方法会跳转到 redirect 参数所在的位置 */
 
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = '登录成功！';
-        mess.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-
-        if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query as {
-          redirect: string;
-        };
-        history.push(redirect || '/');
-        return;
+          if (!history) return;
+          const { query } = history.location;
+          const { redirect } = query as {
+            redirect: string;
+          };
+          history.push(redirect || '/');
+          return;
+        } else {
+          mess.error(msg.msg);
+        }
+      } catch (error) {
+        const defaultLoginFailureMessage = '登录失败，请重试！';
+        mess.error(defaultLoginFailureMessage);
       }
-
-      console.log(msg); // 如果失败去设置用户错误信息
-
-      setUserLoginState(msg);
-    } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      mess.error(defaultLoginFailureMessage);
+    } else {
+      try {
+        const msg = await register({ ...values, type });
+        if (msg.code === 200) {
+          const defaultLoginSuccessMessage = '注册成功';
+          mess.success(defaultLoginSuccessMessage);
+        } else {
+          mess.error(msg.msg);
+        }
+      } catch (error) {
+        const defaultLoginFailureMessage = '注册失败，请重试！';
+        mess.error(defaultLoginFailureMessage);
+      }
     }
   };
 
-  const { status, type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -139,9 +139,6 @@ const Login: React.FC = () => {
           title="哈工大深圳计算机科学与技术学院"
           subTitle={'虚拟机管理平台'}
           submitText={loginFormText}
-          initialValues={{
-            autoLogin: true,
-          }}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
@@ -149,18 +146,15 @@ const Login: React.FC = () => {
           <Tabs
             activeKey={type}
             onChange={(typeStr: string) => {
-              console.log('tab type is ', loginType, typeStr);
               setType(typeStr);
-              setloginFormText(loginType === 'account' ? '登录' : '注册');
+              setloginFormText(typeStr === 'account' ? '登录' : '注册');
+              console.log('tab type is ', typeStr, type);
             }}
           >
             <Tabs.TabPane key="account" tab={'登录'} />
             <Tabs.TabPane key="register" tab={'注册'} />
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
-          )}
           {type === 'account' && (
             <>
               <ProFormText
@@ -194,7 +188,6 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'register' && <LoginMessage content="验证码错误" />}
           {type === 'register' && (
             <>
               <ProFormText
@@ -232,9 +225,6 @@ const Login: React.FC = () => {
               marginBottom: 24,
             }}
           >
-            <ProFormCheckbox noStyle name="autoLogin">
-              自动登录
-            </ProFormCheckbox>
             <a
               style={{
                 float: 'right',

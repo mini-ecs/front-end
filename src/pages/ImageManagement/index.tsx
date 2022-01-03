@@ -79,7 +79,7 @@ const columns: ProColumns<TableListItem>[] = [
   },
   {
     title: '镜像位置',
-    dataIndex: 'status',
+    dataIndex: 'location',
     initialValue: 'all',
     filters: true,
     onFilter: true,
@@ -110,8 +110,8 @@ const columns: ProColumns<TableListItem>[] = [
       </>
     ),
     width: 140,
-    key: 'since',
-    dataIndex: 'createdAt',
+    key: 'last',
+    dataIndex: 'lastModified',
     valueType: 'date',
     sorter: (a, b) => a.createdAt - b.createdAt,
   },
