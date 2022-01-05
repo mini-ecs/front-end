@@ -8,6 +8,8 @@ declare namespace API {
     nickname?: string;
     uuid?: string;
     avatar?: string;
+    access?: string;
+    code?: boolean;
   };
 
   type LoginResult = {
@@ -90,19 +92,44 @@ declare namespace API {
   type CourseList = {
     code?: number;
     msg?: string;
-    data?: Course[];
+    data: Course[];
   };
 
   type Course = {
     courseName?: string;
     teacher?: any;
-    ID?: number;
-    conf?: string;
-    Ima?: string;
-    sta?: string;
-    CreatedAt?: string;
+    ID?: any;
+    machineConfig?: any;
+    image?: any;
+    status?: any;
+    CreatedAt?: any;
+  };
+  type VMList = {
+    code?: number;
+    msg?: string;
+    data: VM[];
   };
 
+  type VM = {
+    name: string;
+    ID: number;
+    ip?: string;
+    creator?: {
+      username: string;
+    };
+    config?: string;
+    sourceCourse?: {
+      courseName?: string;
+      machineConfig?: {
+        cpu?: number;
+        ram?: number;
+      };
+    };
+    status?: {
+      Status?: string;
+    };
+    CreatedAt?: any;
+  };
   type ImageList = {
     code?: number;
     msg?: string;
@@ -133,5 +160,10 @@ declare namespace API {
     imageName?: string;
     note?: string;
     configs?: number;
+  };
+
+  type NewVMOpts = {
+    instanceName?: string;
+    courseName?: string;
   };
 }

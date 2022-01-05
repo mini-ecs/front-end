@@ -13,7 +13,7 @@ const Settings: LayoutSettings & {
   fixSiderbar: true,
   colorWeak: false,
   title: '计算机科学与技术学院实验中心',
-  pwa: false,
+  pwa: true,
   logo: 'https://www.hitsz.edu.cn/media/images/logo.png',
   iconfontUrl: '',
 };

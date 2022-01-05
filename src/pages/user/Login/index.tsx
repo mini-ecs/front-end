@@ -11,7 +11,6 @@ import ProForm from '@ant-design/pro-form';
 import type { ProFormProps } from '@ant-design/pro-form';
 import styles from './index.less';
 import { history, useModel } from 'umi';
-import user from 'mock/user';
 
 export type LoginFormProps<T> = {
   message: React.ReactNode | false;
@@ -95,6 +94,7 @@ const Login: React.FC = () => {
       try {
         // 登录
         const msg = await login({ ...values, type });
+        console.log('login message', msg);
         if (msg.code === 200) {
           const defaultLoginSuccessMessage = '登录成功！';
           mess.success(defaultLoginSuccessMessage);
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
           const { redirect } = query as {
             redirect: string;
           };
-          history.push(redirect || '/');
+          history.push(redirect || '/welcome');
           return;
         } else {
           mess.error(msg.msg);
