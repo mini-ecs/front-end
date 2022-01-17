@@ -1,4 +1,4 @@
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, message as mess } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -45,6 +45,9 @@ const CourseManagement: React.FC = () => {
     const result = await request<{ code: number; msg: string; data: any }>('/api/v1/course/' + id, {
       method: 'delete',
     });
+    if (result.code === 10002) {
+      mess.error('删除课程失败，该课程仍在使用中');
+    }
     console.log(result);
   });
   const columns: ProColumns<TableListItem>[] = [

@@ -141,7 +141,12 @@ declare namespace API {
     type?: string;
     location?: string;
     generateType?: string;
-    creator?: string;
+    ID?: number;
+    creator?: {
+      username?: string;
+    };
+    CreatedAt?: any;
+    UpdatedAt?: any;
   };
 
   type MachineConfigList = {
