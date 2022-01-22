@@ -15,6 +15,7 @@ const VmManagement: React.FC = () => {
     const vms = await request<API.VMList>('/api/v1/vm', {
       method: 'GET',
     });
+    console.log(vms);
     const mapdata = {
       data:
         vms.data?.map((vm) => {
@@ -29,7 +30,7 @@ const VmManagement: React.FC = () => {
               vm.sourceCourse?.machineConfig?.ram +
               'GiB',
             course: vm.sourceCourse?.courseName || ' ',
-            status: vm.status?.Status || ' ',
+            status: vm.Status?.Status || ' ',
             createdAt: vm.CreatedAt,
             note: 'todo',
           };
@@ -74,6 +75,43 @@ const VmManagement: React.FC = () => {
     const result = await request<{ code: number; msg: string; data: any }>('/api/v1/vm/' + id, {
       method: 'delete',
     });
+    console.log(result);
+  });
+  const { run: shutDown } = useRequest(async (id: number) => {
+    const result = await request<{ code: number; msg: string; data: any }>(
+      '/api/v1/vm/shutdown/' + id,
+      {
+        method: 'post',
+      },
+    );
+    console.log(result);
+  });
+  const { run: reboot } = useRequest(async (id: number) => {
+    const result = await request<{ code: number; msg: string; data: any }>(
+      '/api/v1/vm/reboot/' + id,
+      {
+        method: 'post',
+      },
+    );
+    console.log(result);
+  });
+  const { run: start } = useRequest(async (id: number) => {
+    const result = await request<{ code: number; msg: string; data: any }>(
+      '/api/v1/vm/start/' + id,
+      {
+        method: 'post',
+      },
+    );
+    console.log(result);
+  });
+
+  const { run: makeImage } = useRequest(async (id: number) => {
+    const result = await request<{ code: number; msg: string; data: any }>(
+      '/api/v1/vm/image/' + id,
+      {
+        method: 'post',
+      },
+    );
     console.log(result);
   });
   type TableListItem = {
@@ -188,11 +226,30 @@ const VmManagement: React.FC = () => {
         <TableDropdown
           key="actionGroup"
           menus={[
-            { key: 'makeImage', name: '制作快照' },
-            { key: 'resetVM', name: '回滚快照' },
+            { key: 'makeImage', name: '制作镜像' },
+            // { key: 'resetVM', name: '回滚快照' },
+            { key: 'shutdown', name: '关机' },
+            { key: 'reboot', name: '重启' },
+            { key: 'start', name: '开机' },
           ]}
-          onSelect={(key: string) => {
+          onSelect={async (key: string) => {
             console.log('select', key);
+            switch (key) {
+              case 'makeImage':
+                await makeImage(record.key);
+                break;
+              case 'shutdown':
+                await shutDown(record.key);
+                break;
+              case 'reboot':
+                await reboot(record.key);
+                break;
+              case 'start':
+                await start(record.key);
+                break;
+              default:
+            }
+            action?.reload();
           }}
         />,
       ],

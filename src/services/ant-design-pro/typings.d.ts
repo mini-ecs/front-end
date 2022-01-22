@@ -125,7 +125,7 @@ declare namespace API {
         ram?: number;
       };
     };
-    status?: {
+    Status?: {
       Status?: string;
     };
     CreatedAt?: any;
