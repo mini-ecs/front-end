@@ -10,6 +10,10 @@ declare namespace API {
     avatar?: string;
     access?: string;
     code?: boolean;
+    userType?: {
+      ID?: number;
+      type?: string;
+    };
   };
 
   type LoginResult = {

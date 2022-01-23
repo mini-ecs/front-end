@@ -205,14 +205,14 @@ const VmManagement: React.FC = () => {
         >
           详情
         </a>,
-        <a
-          key="duplicate"
-          onClick={() => {
-            console.log('click duplicate');
-          }}
-        >
-          复制
-        </a>,
+        // <a
+        //   key="duplicate"
+        //   onClick={() => {
+        //     console.log('click duplicate');
+        //   }}
+        // >
+        //   复制
+        // </a>,
         <a
           key="delete"
           onClick={async () => {
