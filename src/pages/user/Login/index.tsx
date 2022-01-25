@@ -109,7 +109,7 @@ const Login: React.FC = () => {
           history.push(redirect || '/welcome');
           return;
         } else {
-          mess.error(msg.msg);
+          mess.error('fail' + msg.msg);
         }
       } catch (error) {
         const defaultLoginFailureMessage = '登录失败，请重试！';
@@ -122,7 +122,7 @@ const Login: React.FC = () => {
           const defaultLoginSuccessMessage = '注册成功';
           mess.success(defaultLoginSuccessMessage);
         } else {
-          mess.error(msg.msg);
+          mess.error('fail' + msg.msg);
         }
       } catch (error) {
         const defaultLoginFailureMessage = '注册失败，请重试！';

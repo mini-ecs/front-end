@@ -21,6 +21,9 @@ const CourseManagement: React.FC = () => {
     const courses = await request<API.CourseList>('/api/v1/course', {
       method: 'GET',
     });
+    if (courses && courses.code != 200) {
+      mess.error(courses.msg);
+    }
     const mapdata = {
       data:
         courses.data?.map((course) => {
@@ -46,7 +49,7 @@ const CourseManagement: React.FC = () => {
       method: 'delete',
     });
     if (result.code === 10002) {
-      mess.error('删除课程失败，该课程仍在使用中');
+      mess.error(result.msg);
     }
     console.log(result);
   });

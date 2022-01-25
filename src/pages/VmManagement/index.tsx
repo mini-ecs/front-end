@@ -1,4 +1,4 @@
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, message } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
@@ -16,6 +16,9 @@ const VmManagement: React.FC = () => {
       method: 'GET',
     });
     console.log(vms);
+    if (vms && vms.code != 200) {
+      message.error(vms.msg);
+    }
     const mapdata = {
       data:
         vms.data?.map((vm) => {
@@ -43,7 +46,9 @@ const VmManagement: React.FC = () => {
     const courses = await request<API.CourseList>('/api/v1/course', {
       method: 'GET',
     });
-
+    if (courses && courses.code != 200) {
+      message.error(courses.msg);
+    }
     return {
       data:
         courses.data?.map((course) => {
@@ -68,6 +73,9 @@ const VmManagement: React.FC = () => {
       data: body,
     });
     console.log(res);
+    if (res && res.code != 200) {
+      message.error(res.msg);
+    }
     return res;
   });
 
@@ -76,6 +84,9 @@ const VmManagement: React.FC = () => {
       method: 'delete',
     });
     console.log(result);
+    if (result && result.code != 200) {
+      message.error(result.msg);
+    }
   });
   const { run: shutDown } = useRequest(async (id: number) => {
     const result = await request<{ code: number; msg: string; data: any }>(
@@ -85,6 +96,9 @@ const VmManagement: React.FC = () => {
       },
     );
     console.log(result);
+    if (result && result.code != 200) {
+      message.error(result.msg);
+    }
   });
   const { run: reboot } = useRequest(async (id: number) => {
     const result = await request<{ code: number; msg: string; data: any }>(
@@ -103,6 +117,9 @@ const VmManagement: React.FC = () => {
       },
     );
     console.log(result);
+    if (result && result.code != 200) {
+      message.error(result.msg);
+    }
   });
 
   const { run: makeImage } = useRequest(async (id: number) => {
@@ -113,6 +130,9 @@ const VmManagement: React.FC = () => {
       },
     );
     console.log(result);
+    if (result && result.code != 200) {
+      message.error(result.msg);
+    }
   });
   type TableListItem = {
     key: number;

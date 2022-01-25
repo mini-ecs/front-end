@@ -8,6 +8,7 @@ import { upperFirst } from 'lodash';
 
 export type TableListItem = {
   key: number;
+  name: string;
   creator: string;
   createMethod: string;
   location: string;
@@ -31,6 +32,7 @@ const ImageManagement = () => {
             location: image.location || '',
             createdAt: image.CreatedAt,
             updatedAt: image.UpdatedAt,
+            name: image.name || '',
           };
           return one;
         }) || [],
@@ -43,7 +45,7 @@ const ImageManagement = () => {
       method: 'delete',
     });
     if (result.code === 10002) {
-      mess.error('删除镜像失败，该镜像仍在使用中');
+      mess.error(result.msg);
     }
     console.log(result);
   });
@@ -53,6 +55,10 @@ const ImageManagement = () => {
       dataIndex: 'key',
       valueType: 'indexBorder',
       width: 48,
+    },
+    {
+      title: '镜像名称',
+      dataIndex: 'name',
     },
     {
       title: '创建者',
