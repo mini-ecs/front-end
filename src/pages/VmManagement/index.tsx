@@ -121,6 +121,16 @@ const VmManagement: React.FC = () => {
       message.error(result.msg);
     }
   });
+  const { run: getVNCPort } = useRequest(async (id: number) => {
+    const result = await request<{ code: number; msg: string; data: any }>('/api/v1/vm/vnc/' + id, {
+      method: 'get',
+    });
+    console.log('result is', result);
+    if (result && result.code != 200) {
+      message.error(result.msg);
+    }
+    return result;
+  });
 
   const { run: makeImage } = useRequest(async (id: number) => {
     const result = await request<{ code: number; msg: string; data: any }>(
@@ -225,14 +235,16 @@ const VmManagement: React.FC = () => {
         >
           详情
         </a>,
-        // <a
-        //   key="duplicate"
-        //   onClick={() => {
-        //     console.log('click duplicate');
-        //   }}
-        // >
-        //   复制
-        // </a>,
+        <a
+          key="duplicate"
+          onClick={async () => {
+            const port = await getVNCPort(record.key);
+            console.log('port is', port);
+            window.open('http://10.249.46.250:' + port + '/vnc.html');
+          }}
+        >
+          远程连接
+        </a>,
         <a
           key="delete"
           onClick={async () => {
@@ -319,6 +331,7 @@ const VmManagement: React.FC = () => {
         actionRef={actionRef}
         request={async (params, sorter, filter) => {
           // 表单搜索项会从 params 传入，传递给后端接口。
+          console.log(params, sorter, filter);
           return {
             data: await getVMList(),
           };

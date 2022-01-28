@@ -9,6 +9,7 @@ export default [
   },
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   { path: '/vms', name: '实例管理', icon: 'cloud', component: './VmManagement' },
+  { path: '/vnc', icon: 'flower', component: './VNC' },
   {
     path: '/course',
     access: 'canAdmin',
