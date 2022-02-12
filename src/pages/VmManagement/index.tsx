@@ -137,6 +137,9 @@ const VmManagement: React.FC = () => {
       '/api/v1/vm/image/' + id,
       {
         method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
     );
     console.log(result);
@@ -215,26 +218,26 @@ const VmManagement: React.FC = () => {
       valueType: 'date',
       sorter: (a, b) => a.createdAt - b.createdAt,
     },
-    {
-      title: '备注',
-      dataIndex: 'memo',
-      ellipsis: true,
-      copyable: true,
-    },
+    // {
+    //   title: '备注',
+    //   dataIndex: 'memo',
+    //   ellipsis: true,
+    //   copyable: true,
+    // },
     {
       title: '操作',
       width: 180,
       key: 'option',
       valueType: 'option',
       render: (text, record, _, action) => [
-        <a
-          key="detail"
-          onClick={() => {
-            console.log('click detail');
-          }}
-        >
-          详情
-        </a>,
+        // <a
+        //   key="detail"
+        //   onClick={() => {
+        //     console.log('click detail');
+        //   }}
+        // >
+        //   详情
+        // </a>,
         <a
           key="duplicate"
           onClick={async () => {

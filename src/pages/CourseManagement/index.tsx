@@ -2,9 +2,10 @@ import { Button, Tooltip, message as mess } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { request, useRequest, Link } from 'umi';
+import { request, useRequest, Link, Redirect } from 'umi';
 import { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
+import { query } from 'express';
 export type TableListItem = {
   key: number;
   course: string;
@@ -86,13 +87,13 @@ const CourseManagement: React.FC = () => {
       filters: true,
       onFilter: true,
     },
-    {
-      title: '挂载磁盘',
-      dataIndex: 'disk',
-      initialValue: 'all',
-      filters: true,
-      onFilter: true,
-    },
+    // {
+    //   title: '挂载磁盘',
+    //   dataIndex: 'disk',
+    //   initialValue: 'all',
+    //   filters: true,
+    //   onFilter: true,
+    // },
     {
       title: (
         <>
@@ -114,6 +115,12 @@ const CourseManagement: React.FC = () => {
       key: 'option',
       valueType: 'option',
       render: (text, record, _, action) => [
+        <Link
+          key="modify"
+          to={{ pathname: '/modifyCourse', search: 'id=' + record.key.toString() }}
+        >
+          修改
+        </Link>,
         <a
           key="detail"
           onClick={() => {

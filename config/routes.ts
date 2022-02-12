@@ -25,6 +25,7 @@ export default [
     component: './ImageManagement',
   },
   { path: '/createCourse', icon: 'solution', component: './CreateCourse' },
+  { path: '/modifyCourse', icon: 'solution', component: './ModifyCourse' },
   // {
   //   path: '/admin',
   //   name: '管理页',

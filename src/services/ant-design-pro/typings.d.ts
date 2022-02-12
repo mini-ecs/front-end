@@ -171,6 +171,14 @@ declare namespace API {
     configs?: number;
   };
 
+  type ModifyCourseOpt = {
+    id?: number;
+    courseName?: string;
+    imageName?: string;
+    note?: string;
+    configs?: number;
+  };
+
   type NewVMOpts = {
     instanceName?: string;
     courseName?: string;
