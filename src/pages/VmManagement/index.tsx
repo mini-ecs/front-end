@@ -2,7 +2,7 @@ import { Button, Tooltip, message } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { request, useRequest } from 'umi';
+import { request, useRequest, Link } from 'umi';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { useState, useRef } from 'react';
@@ -19,6 +19,7 @@ const VmManagement: React.FC = () => {
     if (vms && vms.code != 200) {
       message.error(vms.msg);
     }
+    localStorage.setItem('vmlist', JSON.stringify(vms.data));
     const mapdata = {
       data:
         vms.data?.map((vm) => {
@@ -230,14 +231,9 @@ const VmManagement: React.FC = () => {
       key: 'option',
       valueType: 'option',
       render: (text, record, _, action) => [
-        // <a
-        //   key="detail"
-        //   onClick={() => {
-        //     console.log('click detail');
-        //   }}
-        // >
-        //   详情
-        // </a>,
+        <Link key="modify" to={{ pathname: '/vmDetail', search: 'id=' + record.key.toString() }}>
+          详情
+        </Link>,
         <a
           key="duplicate"
           onClick={async () => {

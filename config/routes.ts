@@ -26,6 +26,7 @@ export default [
   },
   { path: '/createCourse', icon: 'solution', component: './CreateCourse' },
   { path: '/modifyCourse', icon: 'solution', component: './ModifyCourse' },
+  { path: '/vmDetail', name: '实例信息', icon: 'solution', component: './vmDetail' },
   // {
   //   path: '/admin',
   //   name: '管理页',
