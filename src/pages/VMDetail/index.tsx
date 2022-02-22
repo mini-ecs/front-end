@@ -18,7 +18,13 @@ const Basic = (props) => {
     };
   });
   const { run: getVMstat } = useRequest(async (id: number) => {
-    const memo = await request<{ data: number }>('/api/v1/vm/memory/' + id, {
+    const memo = await request<{
+      data: {
+        rate: number;
+        disk: number;
+        cpu: number;
+      };
+    }>('/api/v1/vm/memory/' + id, {
       method: 'GET',
     });
     return {
@@ -29,7 +35,6 @@ const Basic = (props) => {
     sourceCourse: any;
     ID: number;
   }>();
-  const [rate, setRate] = useState<number>(0);
 
   useEffect(() => {
     const run = async () => {
@@ -55,22 +60,29 @@ const Basic = (props) => {
   useEffect(() => {}, []);
 
   //   props.location.query.id;
-  const [Memo, setMemo] = useState<React.FC>();
+  const [Memo, setMemo] = useState<JSX.Element>();
+  const [Disk, setDisk] = useState<JSX.Element>();
+  const [CPU, setCPU] = useState<JSX.Element>();
   useEffect(() => {
     const getMemo = async () => {
       const memo = await getVMstat(props.location.query.id);
       const config = {
-        percent: memo,
+        percent: memo.rate,
         outline: {
           border: 4,
-          distance: 8,
+          distance: 3,
         },
         wave: {
           length: 128,
         },
         height: 160,
       };
+
       setMemo(<Liquid {...config} />);
+      config.percent = memo.disk;
+      setDisk(<Liquid {...config} />);
+      config.percent = memo.cpu;
+      setCPU(<Liquid {...config} />);
     };
     getMemo();
   }, [getVMstat, props.location.query.id]);
@@ -83,13 +95,13 @@ const Basic = (props) => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="CPU使用量" bordered={false}>
-            {Memo}
+          <Card title="磁盘使用量" bordered={false}>
+            {Disk}
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="磁盘使用量" bordered={false}>
-            {Memo}
+          <Card title="CPU使用量" bordered={false}>
+            {CPU}
           </Card>
         </Col>
         <Col span={24}>
