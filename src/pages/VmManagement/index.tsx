@@ -239,7 +239,7 @@ const VmManagement: React.FC = () => {
           onClick={async () => {
             const port = await getVNCPort(record.key);
             console.log('port is', port);
-            window.open('http://10.249.46.250:' + port + '/vnc.html');
+            window.open('http://219.223.251.93:' + port + '/vnc.html');
           }}
         >
           远程连接
