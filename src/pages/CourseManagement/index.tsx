@@ -46,6 +46,9 @@ const CourseManagement: React.FC = () => {
   }, {});
 
   const { run: deleteCourse } = useRequest(async (id: number) => {
+    if (id === undefined) {
+      return;
+    }
     const result = await request<{ code: number; msg: string; data: any }>('/api/v1/course/' + id, {
       method: 'delete',
     });

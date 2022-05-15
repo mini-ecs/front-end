@@ -3,9 +3,10 @@ import { Button, Tooltip, message as mess, Menu, Input } from 'antd';
 import { EllipsisOutlined, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { request, useRequest, Link } from 'umi';
+import { request, useRequest, Link, Redirect } from 'umi';
 import { upperFirst } from 'lodash';
-
+import { Upload, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 export type TableListItem = {
   key: number;
   name: string;
@@ -137,7 +138,26 @@ const ImageManagement = () => {
       ],
     },
   ];
-
+  const props = {
+    name: 'file',
+    action: '/api/v1/image',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    method: 'post',
+    withCredentials: true,
+    onChange(info) {
+      console.log(info);
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
   return (
     <ProTable<TableListItem>
       columns={columns}
@@ -162,9 +182,9 @@ const ImageManagement = () => {
         // tooltip: '这是一个标题提示',
       }}
       toolBarRender={() => [
-        <Button type="primary" key="primary">
-          导入镜像
-        </Button>,
+        <Upload {...props}>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        </Upload>,
       ]}
     />
   );

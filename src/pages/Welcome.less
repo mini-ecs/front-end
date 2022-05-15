@@ -6,3 +6,30 @@
   background: @input-bg;
   box-shadow: @card-shadow;
 }
+
+.card {
+  :global {
+    .ant-card-meta-title {
+      margin-bottom: 12px;
+      & > a {
+        display: inline-block;
+        max-width: 100%;
+        color: @heading-color;
+      }
+    }
+    .ant-card-body:hover {
+      .ant-card-meta-title > a {
+        color: @primary-color;
+      }
+    }
+  }
+}
+
+.extraImg {
+  width: 155px;
+  margin-top: -20px;
+  text-align: center;
+  img {
+    width: 100%;
+  }
+}
