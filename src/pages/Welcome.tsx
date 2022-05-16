@@ -48,7 +48,7 @@ const Welcome: React.FC = () => {
             >
               <Card.Meta
                 title={
-                  <a href="http://localhost:9000" target="http://localhost:9000">
+                  <a href="http://219.223.251.93/:9000" target="http://219.223.251.93/:9000">
                     个人文件管理
                   </a>
                 }

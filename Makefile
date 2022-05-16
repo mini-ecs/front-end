@@ -1,7 +1,7 @@
 	USER=fangaoyang
-	HOST=10.249.46.250
-	DIR=/home/fangaoyang/work/deployment/dist
+	HOST=219.223.251.93
+	DIR=/home/fangaoyang/work/front-end
 ALL: deploy
 
 deploy:
-	rsync -avz --delete dist/ $(USER)@$(HOST):$(DIR)
+	rsync -avz --delete ./ $(USER)@$(HOST):$(DIR)
