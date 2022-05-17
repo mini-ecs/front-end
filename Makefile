@@ -4,4 +4,4 @@
 ALL: deploy
 
 deploy:
-	rsync -avz --delete ./ $(USER)@$(HOST):$(DIR)
+	rsync -avz  ./ $(USER)@$(HOST):$(DIR)

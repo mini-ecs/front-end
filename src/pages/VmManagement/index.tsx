@@ -81,8 +81,8 @@ const VmManagement: React.FC = () => {
   });
 
   const { run: deleteVM } = useRequest(async (id: number) => {
-    const result = await request<{ code: number; msg: string; data: any }>('/api/v1/vm/' + id, {
-      method: 'delete',
+    const result = await request<{ code: number; msg: string; data: any }>('/api/v1/vm/delete/' + id, {
+      method: 'post',
     });
     console.log(result);
     if (result && result.code != 200) {

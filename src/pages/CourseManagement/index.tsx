@@ -49,8 +49,8 @@ const CourseManagement: React.FC = () => {
     if (id === undefined) {
       return;
     }
-    const result = await request<{ code: number; msg: string; data: any }>('/api/v1/course/' + id, {
-      method: 'delete',
+    const result = await request<{ code: number; msg: string; data: any }>('/api/v1/course/delete/' + id, {
+      method: 'post',
     });
     if (result.code === 10002) {
       mess.error(result.msg);

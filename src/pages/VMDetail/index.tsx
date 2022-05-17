@@ -6,7 +6,7 @@ import React from 'react';
 import { useRequest, request } from 'umi';
 import { Liquid } from '@ant-design/charts';
 
-const Basic = (props) => {
+const VMDetail = (props) => {
   // console.log(vm);
   const { run: getSpecificCourse } = useRequest(async (id: number) => {
     const course = await request<{ data: API.Course }>('/api/v1/course/' + id, {
@@ -112,15 +112,9 @@ const Basic = (props) => {
               style={{ marginBottom: 32 }}
             >
               <Descriptions.Item label="IP地址">{vm?.ip}</Descriptions.Item>
-              <Descriptions.Item label="状态">
-                {vm?.Status.Status}
-              </Descriptions.Item>
-              <Descriptions.Item label="镜像uuid">
-                {vm?.imageFileLocation}
-              </Descriptions.Item>
-              <Descriptions.Item label="创建者">
-                {vm?.creator.username}
-              </Descriptions.Item>
+              <Descriptions.Item label="状态">{vm?.Status.Status}</Descriptions.Item>
+              <Descriptions.Item label="镜像uuid">{vm?.imageFileLocation}</Descriptions.Item>
+              <Descriptions.Item label="创建者">{vm?.creator.username}</Descriptions.Item>
             </Descriptions>
             <Divider style={{ marginBottom: 32 }} />
             <Descriptions
@@ -128,9 +122,7 @@ const Basic = (props) => {
               title="所属课程信息"
               style={{ marginBottom: 32 }}
             >
-              <Descriptions.Item label="课程名">
-                {vm?.sourceCourse.courseName}
-              </Descriptions.Item>
+              <Descriptions.Item label="课程名">{vm?.sourceCourse.courseName}</Descriptions.Item>
               <Descriptions.Item label="最后更新时间">
                 {vm?.sourceCourse.UpdatedAt}
               </Descriptions.Item>
@@ -138,8 +130,7 @@ const Basic = (props) => {
                 {vm?.sourceCourse.image.name}
               </Descriptions.Item>
               <Descriptions.Item label="机器配置">
-                {vm?.sourceCourse.machineConfig.cpu}核
-                {vm?.sourceCourse.machineConfig.ram}GiB
+                {vm?.sourceCourse.machineConfig.cpu}核{vm?.sourceCourse.machineConfig.ram}GiB
               </Descriptions.Item>
               <Descriptions.Item label="课程老师">
                 {vm?.sourceCourse.teacher.username}
@@ -152,4 +143,4 @@ const Basic = (props) => {
   );
 };
 
-export default Basic;
+export default VMDetail;
