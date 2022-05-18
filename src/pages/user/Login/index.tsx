@@ -116,6 +116,10 @@ const Login: React.FC = () => {
         mess.error(defaultLoginFailureMessage);
       }
     } else {
+      if (values.password.length < 8) {
+        mess.error('密码长度不能小于8');
+        return;
+      }
       try {
         const msg = await register({ ...values, type });
         if (msg.code === 200) {
