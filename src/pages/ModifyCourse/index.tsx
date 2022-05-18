@@ -48,8 +48,8 @@ const ModifyCourse = (props) => {
   });
   const { run: modifyCourse } = useRequest(async (id: number, body: API.ModifyCourseOpt) => {
     console.log('body:', body);
-    return request<API.LoginResult>('/api/v1/course/' + id, {
-      method: 'PUT',
+    return request<API.LoginResult>('/api/v1/course/modify/' + id, {
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
