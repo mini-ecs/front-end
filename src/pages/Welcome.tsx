@@ -41,7 +41,7 @@ const Welcome: React.FC = () => {
               cover={
                 <img
                   alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  src="https://img.ixintu.com/download/jpg/202005/9aee0ec5f995f7df1ff537bf413f2d58_610_494.jpg"
                 />
               }
               className={styles.card}
@@ -66,7 +66,7 @@ const Welcome: React.FC = () => {
               cover={
                 <img
                   alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  src="https://img.ixintu.com/download/jpg/202006/33a6eb5faa30333c0f5cf4662d80b71e_610_525.jpg"
                 />
               }
               className={styles.card}
@@ -88,7 +88,7 @@ const Welcome: React.FC = () => {
               cover={
                 <img
                   alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  src="https://img.ixintu.com/download/jpg/20201226/bd744c8e3ff7fddd5e14eccf2a37b54a_512_512.jpg"
                 />
               }
               className={styles.card}
@@ -110,7 +110,7 @@ const Welcome: React.FC = () => {
               cover={
                 <img
                   alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  src="https://img.ixintu.com/download/jpg/20200810/a964deb663f318585452ae8d2bb355b7_512_512.jpg"
                 />
               }
               className={styles.card}
