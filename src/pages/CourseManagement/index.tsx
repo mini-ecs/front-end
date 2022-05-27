@@ -49,9 +49,12 @@ const CourseManagement: React.FC = () => {
     if (id === undefined) {
       return;
     }
-    const result = await request<{ code: number; msg: string; data: any }>('/api/v1/course/delete/' + id, {
-      method: 'post',
-    });
+    const result = await request<{ code: number; msg: string; data: any }>(
+      '/api/v1/course/delete/' + id,
+      {
+        method: 'post',
+      },
+    );
     if (result.code === 10002) {
       mess.error(result.msg);
     }
@@ -124,14 +127,14 @@ const CourseManagement: React.FC = () => {
         >
           修改
         </Link>,
-        <a
-          key="detail"
-          onClick={() => {
-            console.log('click detail');
-          }}
-        >
-          详情
-        </a>,
+        // <a
+        //   key="detail"
+        //   onClick={() => {
+        //     console.log('click detail');
+        //   }}
+        // >
+        //   详情
+        // </a>,
         <a
           key="delete"
           onClick={async () => {
